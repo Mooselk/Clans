@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="CustomClans" default="makejar" basedir=".">
+    <target name="makejar" description="Create a jar for the project">
+        <mkdir dir="target"></mkdir>
+        <jar destfile="F:\Servers\spigot-1.16.5\plugins\${ant.project.name}.jar">
+        	<zipfileset src="F:\Libraries\fanciful-0.4.0-SNAPSHOT.jar" includes="**/*.java **/*.class"/>
+        	<zipfileset src="F:\Libraries\paste-gg-api-0.9.1.jar" includes="**/*.java **/*.class"/>
+        	<zipfileset src="F:\Libraries\commodore-1.9.jar" includes="**/*.java **/*.class"/>
+        	<zipfileset src="F:\Libraries\paperlib-1.0.6-20200727.232654-1.jar" includes="**/*.java **/*.class"/>
+        	<zipfileset src="F:\Libraries\config-1.4.1.jar" includes="**/*.java **/*.class"/>
+        	<zipfileset src="F:\Libraries\particleeffect-1.7.0-SNAPSHOT.jar" includes="**/*.java **/*.class"/>
+        	<zipfileset src="F:\Libraries\configurate-core-3.6.1.jar" includes="**/*.java **/*.class"/>
+        	<zipfileset src="F:\Libraries\configurate-hocon-3.6.1.jar" includes="**/*.java **/*.class"/>
+            <fileset dir="bin"></fileset>
+        </jar>
+    </target>
+</project>

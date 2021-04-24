@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="F:/Libraries/spigot-1.16.5.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/fanciful-0.4.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/paste-gg-api-0.9.1.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/commodore-1.9.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/PlayerVaultsX-4.1.0.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/Vault.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/PlaceholderAPI-2.10.9.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/worldedit-core-7.3.0-20210423.185555-25.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/worldedit-bukkit-7.3.0-20210423.185555-31.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/worldguard-bukkit-7.0.5-20210412.182312-29.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/worldguard-core-7.0.5-20210412.182312-29.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/EssentialsX-2.18.2.0.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/EssentialsXChat-2.18.2.0.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/paperlib-1.0.6-20200727.232654-1.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/LuckPerms-Bukkit-5.3.3.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/MVdWPlaceholderAPI.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/configurate-hocon-3.6.1.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/configurate-core-3.6.1.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/config-1.4.1.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/particleeffect-1.7.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/Magic-8.5.2.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/LWC.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/Dynmap-3.1-spigot.jar"/>
+	<classpathentry kind="lib" path="F:/Libraries/Sentinel-2.2.6-SNAPSHOT-b408.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
