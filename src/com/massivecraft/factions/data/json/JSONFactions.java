@@ -59,6 +59,8 @@ public class JSONFactions extends MemoryFactions {
     }
 
     private boolean saveCore(File target, Map<String, JSONFaction> entities, boolean sync) {
+
+//    	DiscUtil.writeCatch(new File(FactionsPlugin.getInstance().getDataFolder(), "data/factions2.json"), FactionsPlugin.getInstance().getGson().toJson(entities), sync);
         return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().getGson().toJson(entities), sync);
     }
 

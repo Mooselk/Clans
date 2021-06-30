@@ -136,7 +136,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.aliases.addAll(FactionsPlugin.getInstance().conf().getCommandBase());
         this.aliases.removeAll(Collections.<String>singletonList(null));  // remove any nulls from extra commas
 
-        this.setHelpShort("The faction base command");
+        this.setHelpShort("The clans base command");
         this.helpLong.add(FactionsPlugin.getInstance().txt().parseTags("<i>This command contains all faction stuff."));
 
         this.addSubCommand(this.cmdAdmin);
@@ -228,21 +228,21 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         if (FactionsPlugin.getInstance().conf().commands().fly().isEnable()) {
             this.addSubCommand(this.cmdFly);
             this.addSubCommand(this.cmdTrail);
-            FactionsPlugin.getInstance().getLogger().info("Enabling /f fly command");
+            FactionsPlugin.getInstance().getLogger().info("Enabling /c fly command");
         } else {
-            FactionsPlugin.getInstance().getLogger().info("Faction flight set to false in main.conf. Not enabling /f fly command.");
+            FactionsPlugin.getInstance().getLogger().info("Clan flight set to false in main.conf. Not enabling /c fly command.");
         }
 
     }
 
     public void done() {
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("FactionsTop")) {
-            FactionsPlugin.getInstance().getLogger().info("Found FactionsTop plugin. Disabling our own /f top command.");
+            FactionsPlugin.getInstance().getLogger().info("Found FactionsTop plugin. Disabling our own /c top command.");
         } else {
             this.addSubCommand(this.cmdTop);
         }
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlayerVaults")) {
-            FactionsPlugin.getInstance().getLogger().info("Found PlayerVaults hook, adding /f vault and /f setmaxvault commands.");
+            FactionsPlugin.getInstance().getLogger().info("Found PlayerVaults hook, adding /c vault and /c setmaxvault commands.");
             this.addSubCommand(new CmdSetMaxVaults());
             this.addSubCommand(new CmdVault());
         }

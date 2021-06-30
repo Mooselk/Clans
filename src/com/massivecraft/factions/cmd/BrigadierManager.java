@@ -18,7 +18,7 @@ import java.util.logging.Level;
 public class BrigadierManager {
 
     public Commodore commodore;
-    public LiteralArgumentBuilder<Object> brigadier = LiteralArgumentBuilder.literal("factions");
+    public LiteralArgumentBuilder<Object> brigadier = LiteralArgumentBuilder.literal("clans");
 
     public BrigadierManager() {
         commodore = CommodoreProvider.getCommodore(FactionsPlugin.getInstance());
@@ -28,7 +28,7 @@ public class BrigadierManager {
         commodore.register(brigadier.build());
 
         // Add factions children to f alias
-        LiteralArgumentBuilder<Object> fLiteral = LiteralArgumentBuilder.literal("f");
+        LiteralArgumentBuilder<Object> fLiteral = LiteralArgumentBuilder.literal("c");
         for (CommandNode<Object> node : brigadier.getArguments()) {
             fLiteral.then(node);
         }

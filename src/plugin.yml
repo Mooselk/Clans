@@ -6,11 +6,11 @@ softdepend: [LuckPerms]
 api-version: 1.13
 commands:
   clans:
-    description: Reference command for Factions.
+    description: Reference command for Clans.
     aliases: [c]
 permissions:
   factions.kit.admin:
-    description: All faction permissions.
+    description: All clans permissions.
     children:
       factions.kit.mod: true
       factions.config: true

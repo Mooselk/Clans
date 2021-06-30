@@ -16,7 +16,32 @@ import java.util.Map;
 import java.util.Set;
 
 public interface Faction extends EconomyParticipator {
-    Map<String, List<String>> getAnnouncements();
+    
+	// Custom
+	
+	void setCorners(LazyLocation a, LazyLocation b);
+	
+	LazyLocation getCornerA();
+	
+	LazyLocation getCornerB();
+	
+	void setBypassing(boolean bypass);
+	
+	boolean isBypassing();
+	
+	boolean hasShield();
+	
+	void setShieldExpire(long expire);
+	
+	void setCenter(LazyLocation location);
+    
+	long getShieldExpire();
+	
+    LazyLocation getCenter();
+    
+    //
+	
+	Map<String, List<String>> getAnnouncements();
 
     Map<String, LazyLocation> getWarps();
 
@@ -81,7 +106,7 @@ public interface Faction extends EconomyParticipator {
     boolean isPermanent();
 
     void setPermanent(boolean isPermanent);
-
+    
     String getTag();
 
     String getTag(String prefix);

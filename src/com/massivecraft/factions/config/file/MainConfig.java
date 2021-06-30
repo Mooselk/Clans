@@ -877,7 +877,7 @@ public class MainConfig {
                 return recruit;
             }
         }
-
+        
         public class Chat {
             @Comment("Allow for players to chat only within their faction, with allies, etc.\n" +
                     "Set to false to only allow public chats through this plugin.")
@@ -972,7 +972,7 @@ public class MainConfig {
 
         public class Homes {
             private boolean enabled = true;
-            private boolean mustBeInClaimedTerritory = true;
+            private boolean mustBeInClaimedTerritory = false;
             private boolean teleportToOnDeath = true;
             private boolean teleportCommandEnabled = true;
             private boolean teleportCommandEssentialsIntegration = true;

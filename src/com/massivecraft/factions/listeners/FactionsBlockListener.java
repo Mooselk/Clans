@@ -248,10 +248,14 @@ public class FactionsBlockListener implements Listener {
         if (me.isAdminBypassing()) {
             return true;
         }
-
+        
+        if (me.getFaction().isBypassing()) {
+        	return true;
+        }
+        
         FLocation loc = new FLocation(location);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
-
+        
         if (otherFaction.isWilderness()) {
             if (conf.worldGuard().isBuildPriority() && FactionsPlugin.getInstance().getWorldguard() != null && FactionsPlugin.getInstance().getWorldguard().playerCanBuild(player, location)) {
                 return true;

@@ -1,5 +1,22 @@
 package com.massivecraft.factions.data;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
@@ -25,25 +42,13 @@ import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
-    protected String id = null;
+	
+	protected boolean bypassing = false;
+	protected LazyLocation center;
+	protected long shieldTime;
+	protected String id = null;
     protected boolean peacefulExplosionsEnabled;
     protected boolean permanent;
     protected String tag;
@@ -55,9 +60,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected long foundedDate;
     protected transient long lastPlayerLoggedOffTime;
     protected double powerBoost;
+    protected transient Set<FPlayer> fplayers = new HashSet<>();
     protected Map<String, Relation> relationWish = new HashMap<>();
     protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<>();
-    protected transient Set<FPlayer> fplayers = new HashSet<>();
     protected Set<String> invites = new HashSet<>();
     protected HashMap<String, List<String>> announcements = new HashMap<>();
     protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<>();
@@ -265,7 +270,64 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public String getDescription() {
         return this.description;
     }
+    
+    /**
+     * 
+     * Custom methods start
+     * 
+     */
+    private LazyLocation cornerA, cornerB;
+    
+    public void setCorners(LazyLocation cornerA, LazyLocation cornerB)
+    {
+    	this.cornerA = cornerA;
+    	this.cornerB = cornerB;
+    }
+    
+    public LazyLocation getCornerA()
+    {
+    	return this.cornerA;
+    }
+    
+    public LazyLocation getCornerB()
+    {
+    	return this.cornerB;
+    }
 
+    public void setBypassing(boolean bypass) {
+    	this.bypassing = bypass;
+    }
+    
+    public boolean isBypassing() {
+    	return this.bypassing;
+    }
+    
+    public boolean hasShield() {
+    	return shieldTime != 0;
+    }
+    
+    public long getShieldExpire() {
+    	return shieldTime;
+    }
+    
+    public void setShieldExpire(long shieldTime) {
+    	this.shieldTime = shieldTime;
+    }
+    
+    public void setCenter(LazyLocation location) {
+    	this.center = location;
+    }
+    
+    public LazyLocation getCenter() {
+    	return this.center;
+    }
+
+    /**
+     * 
+     * Custom methods end
+     * 
+     */
+    
     public void setDescription(String value) {
         this.description = value;
     }
@@ -551,11 +613,19 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // -------------------------------------------- //
     // Construct
     // -------------------------------------------- //
+    public static int instances = 0;
+    
     protected MemoryFaction() {
+    	instances++;
+    	Bukkit.getLogger().info("Created new instance!! none" + instances);
     }
 
     public MemoryFaction(String id) {
+    	instances++;
+    	Bukkit.getLogger().info("Created new instance!! id" + instances);
         this.id = id;
+        this.center = new LazyLocation(Bukkit.getWorlds().get(0).getName(), 0, 1, 0);
+        this.shieldTime = 0;
         this.open = FactionsPlugin.getInstance().conf().factions().other().isNewFactionsDefaultOpen();
         this.tag = "???";
         this.description = TL.GENERIC_DEFAULTDESCRIPTION.toString();
@@ -573,7 +643,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public MemoryFaction(MemoryFaction old) {
+    	instances++;
+    	Bukkit.getLogger().info("Created new instance!! old" + instances);
         id = old.id;
+        center = old.center;
         peacefulExplosionsEnabled = old.peacefulExplosionsEnabled;
         permanent = old.permanent;
         tag = old.tag;
@@ -841,10 +914,20 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean addFPlayer(FPlayer fplayer) {
+    	Bukkit.getLogger().info("Fplayers null? add = " + (fplayers == null));
+    	if (fplayers == null)
+    	{
+    		fplayers = new HashSet<>();
+    	}
         return !this.isPlayerFreeType() && fplayers.add(fplayer);
     }
 
     public boolean removeFPlayer(FPlayer fplayer) {
+    	Bukkit.getLogger().info("Fplayers null? remove = " + (fplayers == null));
+    	if (fplayers == null)
+    	{
+    		fplayers = new HashSet<>();
+    	}
         return !this.isPlayerFreeType() && fplayers.remove(fplayer);
     }
 

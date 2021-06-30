@@ -8,10 +8,7 @@ public class JSONFaction extends MemoryFaction {
         super(arg0);
     }
 
-    private JSONFaction() {
-    }
-
     public JSONFaction(String id) {
         super(id);
-    }
+    }	
 }
