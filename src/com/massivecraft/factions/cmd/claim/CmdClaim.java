@@ -39,7 +39,7 @@ public class CmdClaim extends FCommand {
 
         if (radius < 2) {
             // single chunk
-            context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true);
+            context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true, false);
         } else {
             // radius claim
             if (!Permission.CLAIM_RADIUS.has(context.sender, false)) {
@@ -53,7 +53,7 @@ public class CmdClaim extends FCommand {
 
                 @Override
                 public boolean work() {
-                    boolean success = context.fPlayer.attemptClaim(forFaction, this.currentLocation(), true);
+                    boolean success = context.fPlayer.attemptClaim(forFaction, this.currentLocation(), true, false);
                     if (success) {
                         failCount = 0;
                     } else if (failCount++ >= limit) {

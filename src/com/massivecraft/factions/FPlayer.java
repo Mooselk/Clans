@@ -209,13 +209,15 @@ public interface FPlayer extends EconomyParticipator {
 
     boolean canClaimForFaction(Faction forFaction);
 
-    boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure);
+    boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure, boolean bypass);
 
-    boolean canClaimForFactionAtLocation(Faction forFaction, FLocation location, boolean notifyFailure);
+    boolean canClaimForFactionAtLocation(Faction forFaction, FLocation location, boolean notifyFailure, boolean bypass);
+    
+    boolean attemptClansClaim(Faction forFaction, FLocation flocation, boolean notifyFailure, boolean notifySuccess);
 
-    boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure);
+    boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure, boolean bypass);
 
-    boolean attemptClaim(Faction forFaction, FLocation location, boolean notifyFailure);
+    boolean attemptClaim(Faction forFaction, FLocation location, boolean notifyFailure, boolean bypass);
 
     String getId();
 

@@ -43,7 +43,7 @@ public class CmdAutoClaim extends FCommand {
         context.fPlayer.setAutoClaimFor(forFaction);
 
         context.msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(context.fPlayer));
-        context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true);
+        context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true, false);
     }
 
     @Override

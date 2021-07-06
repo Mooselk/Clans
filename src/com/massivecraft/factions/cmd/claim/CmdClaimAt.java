@@ -27,7 +27,7 @@ public class CmdClaimAt extends FCommand {
         int x = context.argAsInt(1);
         int z = context.argAsInt(2);
         FLocation location = new FLocation(context.argAsString(0), x, z);
-        context.fPlayer.attemptClaim(context.faction, location, true);
+        context.fPlayer.attemptClaim(context.faction, location, true, false);
     }
 
     @Override

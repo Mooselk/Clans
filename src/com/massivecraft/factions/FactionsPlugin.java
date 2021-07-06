@@ -323,6 +323,10 @@ public class FactionsPlugin extends JavaPlugin implements FactionsAPI {
         }
 
         int loadedPlayers = FPlayers.getInstance().load();
+        /**
+         * TODO
+         * Plugin loads factions?
+         */
         int loadedFactions = Factions.getInstance().load();
         for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
             Faction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());

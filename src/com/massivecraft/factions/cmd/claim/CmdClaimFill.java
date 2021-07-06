@@ -101,7 +101,7 @@ public class CmdClaimFill extends FCommand {
         final int limFail = FactionsPlugin.getInstance().conf().factions().claims().getRadiusClaimFailureLimit();
         int fails = 0;
         for (FLocation currentLocation : toClaim) {
-            if (!context.fPlayer.attemptClaim(forFaction, currentLocation, true)) {
+            if (!context.fPlayer.attemptClaim(forFaction, currentLocation, true, false)) {
                 fails++;
             }
             if (fails >= limFail) {

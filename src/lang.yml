@@ -751,7 +751,7 @@ GENERIC:
   SERVERADMIN: A server admin
   DISABLED: disabled
   ENABLED: enabled
-  INFINITY: ∞
+  INFINITY: âˆž
   CONSOLEONLY: This command cannot be run as a player.
   PLAYERONLY: '&cThis command can only be used by ingame players.'
   MEMBERONLY: '&cYou are not member of any faction.'

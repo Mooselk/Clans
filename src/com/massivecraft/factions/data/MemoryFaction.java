@@ -57,6 +57,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected boolean peaceful;
     protected Integer permanentPower;
     protected LazyLocation home;
+    protected LazyLocation cornerA;
+    protected LazyLocation cornerB;
     protected long foundedDate;
     protected transient long lastPlayerLoggedOffTime;
     protected double powerBoost;
@@ -272,11 +274,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
     
     /**
-     * 
+     * TODO
      * Custom methods start
      * 
      */
-    private LazyLocation cornerA, cornerB;
     
     public void setCorners(LazyLocation cornerA, LazyLocation cornerB)
     {
@@ -323,7 +324,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     /**
-     * 
+     * TODO
      * Custom methods end
      * 
      */
@@ -613,18 +614,15 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // -------------------------------------------- //
     // Construct
     // -------------------------------------------- //
-    public static int instances = 0;
     
     protected MemoryFaction() {
-    	instances++;
-    	Bukkit.getLogger().info("Created new instance!! none" + instances);
     }
 
     public MemoryFaction(String id) {
-    	instances++;
-    	Bukkit.getLogger().info("Created new instance!! id" + instances);
         this.id = id;
         this.center = new LazyLocation(Bukkit.getWorlds().get(0).getName(), 0, 1, 0);
+        this.cornerA = new LazyLocation(Bukkit.getWorlds().get(0).getName(), 1, 1, 1);
+        this.cornerB = new LazyLocation(Bukkit.getWorlds().get(0).getName(), -1, 256, -1);
         this.shieldTime = 0;
         this.open = FactionsPlugin.getInstance().conf().factions().other().isNewFactionsDefaultOpen();
         this.tag = "???";
@@ -643,8 +641,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public MemoryFaction(MemoryFaction old) {
-    	instances++;
-    	Bukkit.getLogger().info("Created new instance!! old" + instances);
         id = old.id;
         center = old.center;
         peacefulExplosionsEnabled = old.peacefulExplosionsEnabled;

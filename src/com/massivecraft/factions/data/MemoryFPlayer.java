@@ -770,11 +770,11 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     // Not used
-    public boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure) {
-        return canClaimForFactionAtLocation(forFaction, new FLocation(location), notifyFailure);
+    public boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure, boolean bypass) {
+        return canClaimForFactionAtLocation(forFaction, new FLocation(location), notifyFailure, bypass);
     }
 
-    public boolean canClaimForFactionAtLocation(Faction forFaction, FLocation flocation, boolean notifyFailure) {
+    public boolean canClaimForFactionAtLocation(Faction forFaction, FLocation flocation, boolean notifyFailure, boolean bypass) {
         FactionsPlugin plugin = FactionsPlugin.getInstance();
         String denyReason = null;
         Faction myFaction = getFaction();
@@ -783,6 +783,10 @@ public abstract class MemoryFPlayer implements FPlayer {
         int factionBuffer = plugin.conf().factions().claims().getBufferZone();
         int worldBuffer = plugin.conf().worldBorder().getBuffer();
 
+        if (bypass) {
+        	return true;
+        }
+        
         if (plugin.conf().worldGuard().isChecking() && plugin.getWorldguard() != null && plugin.getWorldguard().checkForRegionsInChunk(flocation.getChunk())) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
             denyReason = plugin.txt().parse(TL.CLAIM_PROTECTED.toString());
@@ -868,11 +872,11 @@ public abstract class MemoryFPlayer implements FPlayer {
         return denyReason == null;
     }
 
-    public boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure) {
-        return attemptClaim(forFaction, new FLocation(location), notifyFailure);
+    public boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure, boolean bypass) {
+        return attemptClaim(forFaction, new FLocation(location), notifyFailure, bypass);
     }
-
-    public boolean attemptClaim(Faction forFaction, FLocation flocation, boolean notifyFailure) {
+    
+    public boolean attemptClansClaim(Faction forFaction, FLocation flocation, boolean notifyFailure, boolean notifySuccess) {
         // notifyFailure is false if called by auto-claim; no need to notify on every failure for it
         // return value is false on failure, true on success
 
@@ -880,7 +884,79 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         int ownedLand = forFaction.getLandRounded();
 
-        if (!this.canClaimForFactionAtLocation(forFaction, flocation, notifyFailure)) {
+        if (!this.canClaimForFactionAtLocation(forFaction, flocation, notifyFailure, true)) {
+            return false;
+        }
+
+        // if economy is enabled and they're not on the bypass list, make sure they can pay
+        boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone();
+        double cost = 0.0;
+        EconomyParticipator payee = null;
+        if (mustPay) {
+            cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
+
+            if (FactionsPlugin.getInstance().conf().economy().getClaimUnconnectedFee() != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, forFaction)) {
+                cost += FactionsPlugin.getInstance().conf().economy().getClaimUnconnectedFee();
+            }
+
+            if (FactionsPlugin.getInstance().conf().economy().isBankEnabled() && FactionsPlugin.getInstance().conf().economy().isBankFactionPaysLandCosts() && this.hasFaction() && this.getFaction().hasAccess(this, PermissibleAction.ECONOMY)) {
+                payee = this.getFaction();
+            } else {
+                payee = this;
+            }
+
+            if (!Econ.hasAtLeast(payee, cost, TL.CLAIM_TOCLAIM.toString())) {
+                return false;
+            }
+        }
+
+        LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
+        Bukkit.getServer().getPluginManager().callEvent(claimEvent);
+        if (claimEvent.isCancelled()) {
+            return false;
+        }
+
+        // then make 'em pay (if applicable)
+        if (mustPay && !Econ.modifyMoney(payee, -cost, TL.CLAIM_TOCLAIM.toString(), TL.CLAIM_FORCLAIM.toString())) {
+            return false;
+        }
+
+        // Was an over claim
+        if (mustPay && currentFaction.isNormal() && currentFaction.hasLandInflation()) {
+            // Give them money for over claiming.
+            Econ.modifyMoney(payee, FactionsPlugin.getInstance().conf().economy().getOverclaimRewardMultiplier(), TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
+        }
+
+        if (LWC.getEnabled() && forFaction.isNormal() && FactionsPlugin.getInstance().conf().lwc().isResetLocksOnCapture()) {
+            LWC.clearOtherLocks(flocation, this.getFaction());
+        }
+
+        // announce success
+//        Set<FPlayer> informTheseFPlayers = new HashSet<>();
+//        informTheseFPlayers.add(this);
+//        informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
+//        for (FPlayer fp : informTheseFPlayers) {
+//            fp.msg(TL.CLAIM_CLAIMED, this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
+//        }
+
+        Board.getInstance().setFactionAt(forFaction, flocation);
+
+        if (FactionsPlugin.getInstance().conf().logging().isLandClaims()) {
+            FactionsPlugin.getInstance().log(TL.CLAIM_CLAIMEDLOG.toString(), this.getName(), flocation.getCoordString(), forFaction.getTag());
+        }
+
+        return true;
+    }
+
+    public boolean attemptClaim(Faction forFaction, FLocation flocation, boolean notifyFailure, boolean bypass) {
+        // notifyFailure is false if called by auto-claim; no need to notify on every failure for it
+        // return value is false on failure, true on success
+
+        Faction currentFaction = Board.getInstance().getFactionAt(flocation);
+
+        int ownedLand = forFaction.getLandRounded();
+        
+        if (!this.canClaimForFactionAtLocation(forFaction, flocation, notifyFailure, false)) {
             return false;
         }
 

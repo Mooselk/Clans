@@ -63,7 +63,7 @@ public class CmdClaimLine extends FCommand {
 
         // TODO: make this a task like claiming a radius?
         for (int i = 0; i < amount; i++) {
-            context.fPlayer.attemptClaim(forFaction, location, true);
+            context.fPlayer.attemptClaim(forFaction, location, true, false);
             location = location.add(blockFace.getModX() * 16, 0, blockFace.getModZ() * 16);
         }
     }

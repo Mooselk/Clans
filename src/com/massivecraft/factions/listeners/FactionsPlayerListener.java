@@ -220,7 +220,7 @@ public class FactionsPlayerListener extends AbstractListener {
         boolean canFlyPreClaim = me.canFlyAtLocation();
 
         if (me.getAutoClaimFor() != null) {
-            me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
+            me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true, false);
         } else if (me.isAutoSafeClaimEnabled()) {
             if (!Permission.MANAGE_SAFE_ZONE.has(player)) {
                 me.setIsAutoSafeClaimEnabled(false);
